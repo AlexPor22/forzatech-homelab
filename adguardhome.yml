@@ -1,1 +1,37 @@
-iiiiiiiiiiiiiiii
+services:
+  adguardhome:
+    image: adguard/adguardhome:latest
+    container_name: adguardhome
+    restart: unless-stopped
+
+    security_opt:
+      - no-new-privileges:true
+
+    environment:
+      - TZ=America/El_Salvador
+
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /datos/adguardhome/work:/opt/adguardhome/work
+      - /datos/adguardhome/config:/opt/adguardhome/conf
+
+    ports:
+      # DNS
+      - "53:53/tcp"
+      - "53:53/udp"
+
+      # Panel Web
+      - "3000:3000/tcp"
+      - "8082:80/tcp"
+
+      # DNS cifrado
+      - "443:443/tcp"
+      - "443:443/udp"
+      - "853:853/tcp"
+      - "853:853/udp"
+
+      # DNS-over-QUIC
+      - "784:784/udp"
+      - "8853:8853/udp"
+      - "5443:5443/tcp"
+      - "5443:5443/udp"
