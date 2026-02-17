@@ -1,6 +1,6 @@
 services:
-  db:  # Servicio de base de datos (MariaDB para Nextcloud)
-    image: mariadb:10.6  # Imagen específica de MariaDB (versión estable recomendada)
+  db:  # Servicio de base de datos
+    image: mariadb:10.6  # Imagen específica de MariaDB recomendada por Nextcloud
     container_name: nextcloud-db  # Nombre personalizado del contenedor
     restart: unless-stopped  # Se reinicia automáticamente si falla
 

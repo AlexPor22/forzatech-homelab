@@ -12,7 +12,7 @@ services:
 
     volumes:
       - /etc/localtime:/etc/localtime:ro  # Sincroniza hora del host
-      - /var/run/docker.sock:/var/run/docker.sock:ro # Acceso al socket Docker (permite administrar contenedores)
+      - /var/run/docker.sock:/var/run/docker.sock:ro # Acceso al socket Docker para gestionar contenedores
       - /datos/portainer/portainer-data:/data # Base de datos y configuración persistente de Portainer
 
     ports:

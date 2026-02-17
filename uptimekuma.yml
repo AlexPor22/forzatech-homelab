@@ -1,5 +1,5 @@
 services:
-  uptime-kuma:  # Servicio de monitoreo de disponibilidad (tipo UptimeRobot self-hosted)
+  uptime-kuma:  # Servicio de monitoreo de disponibilidad y rendimiento de tus servicios
     image: louislam/uptime-kuma:latest  # Imagen oficial de Uptime Kuma
     container_name: uptime-kuma  # Nombre personalizado del contenedor
     restart: unless-stopped  # Reinicio automático si falla o reinicia el servidor

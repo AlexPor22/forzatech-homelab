@@ -23,7 +23,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro  # Sincroniza hora del host
       - /datos/plex/config:/config  # Configuración y base de datos de Plex
-      - /datos/descargas:/data/descargas:ro  # Carpeta accesible para multimedia (solo lectura)
+      - /datos/descargas:/data/descargas:ro  # Carpeta accesible para multimedia
 
       #- /mnt/disco1/Cine/Peliculas:/movies
       # Biblioteca de películas (comentada)

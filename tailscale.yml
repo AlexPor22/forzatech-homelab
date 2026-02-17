@@ -15,7 +15,7 @@ services:
       - TZ=America/El_Salvador  # Zona horaria
       - TS_AUTHKEY=  # Clave de autenticación generada en tu panel de Tailscale
       - TS_STATE_DIR=/var/lib/tailscale  # Directorio donde se guarda estado de la VPN
-      - TS_USERSPACE=false  # Usa modo kernel (más rendimiento que userspace)
+      - TS_USERSPACE=false  # Usa modo kernel (compatibilidad y rendimiento óptimos en Linux)
 
     volumes:
       - /etc/localtime:/etc/localtime:ro  # Sincroniza hora del host

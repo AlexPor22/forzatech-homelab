@@ -15,5 +15,5 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro # Acceso al socket de Docker (necesario para ver y actualizar contenedores)
 
     command: --cleanup --interval 86400
-    # --cleanup  → elimina imágenes antiguas después de actualizar
+    # --cleanup  → elimina imágenes antiguas después de actualizar contenedores
     # --interval 86400 → revisa actualizaciones cada 86400 segundos (24 horas)

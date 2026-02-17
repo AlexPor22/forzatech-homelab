@@ -1,5 +1,5 @@
 services:
-  samba:  # Servicio para compartir archivos en red (SMB)
+  samba:  # Servicio para compartir archivos en red
     image: dockurr/samba  # Imagen ligera para montar servidor Samba
     container_name: samba  # Nombre personalizado del contenedor
     restart: unless-stopped  # Reinicio automático si falla o reinicia el servidor
