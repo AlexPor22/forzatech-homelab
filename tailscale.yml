@@ -1,0 +1,34 @@
+services:
+  tailscale-authkey1:  # Servicio principal de Tailscale (VPN privada)
+    image: tailscale/tailscale:latest  # Imagen oficial de Tailscale
+    container_name: ts-authkey-test  # Nombre personalizado del contenedor
+    hostname: forzatech  # Nombre que aparecerá en tu red Tailscale
+    restart: unless-stopped  # Reinicio automático si falla o reinicia el servidor
+
+    security_opt:
+      - no-new-privileges:true  # Evita que el contenedor escale privilegios
+
+    cap_add:
+      - NET_ADMIN  # Permite modificar configuración de red (necesario para VPN)
+
+    environment:
+      - TZ=America/El_Salvador  # Zona horaria
+      - TS_AUTHKEY=  # Clave de autenticación generada en tu panel de Tailscale
+      - TS_STATE_DIR=/var/lib/tailscale  # Directorio donde se guarda estado de la VPN
+      - TS_USERSPACE=false  # Usa modo kernel (más rendimiento que userspace)
+
+    volumes:
+      - /etc/localtime:/etc/localtime:ro  # Sincroniza hora del host
+      - /datos/tailscale/state:/var/lib/tailscale # Persistencia del estado de la VPN (clave, identidad, IP asignada)
+      - /dev/net/tun:/dev/net/tun # Dispositivo necesario para crear túnel VPN
+
+  nginx-authkey-test:  # Servicio que usará la red de Tailscale
+    image: nginx:latest  # Imagen oficial de Nginx
+    container_name: nginx-authkey-test  # Nombre personalizado
+    restart: unless-stopped  # Reinicio automático
+
+    network_mode: service:tailscale-authkey1  
+    # Comparte la red del contenedor Tailscale.
+    # Esto significa:
+    # - Nginx NO expone puertos directamente al host.
+    # - Solo es accesible a través de la IP Tailscale.

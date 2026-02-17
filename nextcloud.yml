@@ -1,0 +1,50 @@
+services:
+  db:  # Servicio de base de datos (MariaDB para Nextcloud)
+    image: mariadb:10.6  # Imagen específica de MariaDB (versión estable recomendada)
+    container_name: nextcloud-db  # Nombre personalizado del contenedor
+    restart: unless-stopped  # Se reinicia automáticamente si falla
+
+    security_opt:
+      - no-new-privileges:true  # Evita escalamiento de privilegios dentro del contenedor
+
+    command: --transaction-isolation=READ-COMMITTED --log-bin=binlog --binlog-format=ROW
+    # Configuración recomendada por Nextcloud:
+    # - READ-COMMITTED → mejora consistencia en transacciones
+    # - binlog activado → requerido para ciertas funciones
+    # - formato ROW → mejor compatibilidad
+
+    environment:
+      - TZ=America/El_Salvador  # Zona horaria
+      - MYSQL_ROOT_PASSWORD=  # Contraseña root de la base de datos
+      - MYSQL_DATABASE=nextcloud  # Nombre de la base de datos que se creará
+      - MYSQL_USER=nextcloud  # Usuario específico para Nextcloud
+      - MYSQL_PASSWORD=  # Contraseña del usuario
+
+    volumes:
+      - db:/var/lib/mysql  # Volumen persistente donde se almacenan los datos de la base
+
+  nextcloud:  # Servicio principal de almacenamiento tipo nube privada
+    image: nextcloud:latest  # Imagen oficial de Nextcloud
+    container_name: nextcloud  # Nombre personalizado
+    restart: unless-stopped  # Reinicio automático
+
+    security_opt:
+      - no-new-privileges:true  # Seguridad básica
+
+    environment:
+      - TZ=America/El_Salvador  # Zona horaria
+      - MYSQL_HOST=db  # Nombre del servicio de base de datos (conexión interna Docker)
+      - MYSQL_DATABASE=nextcloud  # Base de datos a usar
+      - MYSQL_USER=nextcloud  # Usuario definido arriba
+      - MYSQL_PASSWORD=  # Contraseña del usuario
+
+    volumes:
+      - /etc/localtime:/etc/localtime:ro  # Sincroniza hora del host
+      - /datos/nextCloud:/var/www/html  # Archivos principales de Nextcloud (config + apps + data)
+      - /mnt/disco1:/mnt/disco1  # Acceso a disco externo desde Nextcloud
+
+    ports:
+      - "8081:80"  # Acceso web → http://IP_DEL_SERVIDOR:8081
+
+volumes:
+  db:  # Volumen Docker para persistencia de MariaDB

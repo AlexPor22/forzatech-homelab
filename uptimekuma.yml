@@ -1,0 +1,18 @@
+services:
+  uptime-kuma:  # Servicio de monitoreo de disponibilidad (tipo UptimeRobot self-hosted)
+    image: louislam/uptime-kuma:latest  # Imagen oficial de Uptime Kuma
+    container_name: uptime-kuma  # Nombre personalizado del contenedor
+    restart: unless-stopped  # Reinicio automático si falla o reinicia el servidor
+
+    security_opt:
+      - no-new-privileges:true  # Evita que el contenedor escale privilegios adicionales
+
+    environment:
+      - TZ=America/El_Salvador  # Zona horaria para registros y alertas correctas
+
+    volumes:
+      - /etc/localtime:/etc/localtime:ro  # Sincroniza hora del host
+      - /datos/uptime-kuma:/app/data  # Base de datos y configuración persistente
+
+    ports:
+      - "3001:3001"  # Acceso web → http://IP_DEL_SERVIDOR:3001

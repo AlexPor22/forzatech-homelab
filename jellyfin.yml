@@ -1,0 +1,27 @@
+services:
+  jellyfin:  # Nombre del servicio (servidor multimedia)
+    image: lscr.io/linuxserver/jellyfin:latest  # Imagen oficial de LinuxServer.io
+    container_name: jellyfin  # Nombre personalizado del contenedor
+    restart: unless-stopped  # Se reinicia automáticamente si falla o reinicias el servidor
+
+    security_opt:
+      - no-new-privileges:true  # Evita que el contenedor escale privilegios adicionales
+
+    environment:
+      - PUID=1000  # Usuario que ejecuta el servicio (debe coincidir con permisos en discos)
+      - PGID=1000  # Grupo asociado
+      - TZ=America/El_Salvador  # Zona horaria para logs y programación
+
+    volumes:           
+      - /etc/localtime:/etc/localtime:ro  # Sincroniza hora del host
+      - /datos/jellyfin/config:/config  # Configuración, base de datos y metadata
+
+      # Carpetas multimedia (solo lectura por seguridad)
+      - /datos/descargas:/data/descargas:ro  # Carpeta de descargas (modo solo lectura)
+      - /mnt/disco1/Cine/Peliculas:/data/movies:ro  # Biblioteca de películas
+      - /mnt/disco1/Cine/Series:/data/series:ro  # Biblioteca de series
+      - /mnt/disco1/Cine/Saga de Peliculas:/data/sagas:ro  # Colecciones o sagas
+
+    ports:
+      - "8096:8096"        # Acceso web principal → http://IP_DEL_SERVIDOR:8096
+      - "7359:7359/udp"    # Descubrimiento automático en red local (DLNA / autodiscovery)

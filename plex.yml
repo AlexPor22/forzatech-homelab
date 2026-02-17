@@ -1,0 +1,32 @@
+services:
+  plex:  # Servicio de Plex Media Server
+    image: lscr.io/linuxserver/plex:latest  # Imagen oficial de LinuxServer.io
+    container_name: plex  # Nombre personalizado del contenedor
+    restart: unless-stopped  # Reinicio automático si falla o reinicia el servidor
+
+    network_mode: host  
+    # Usa la red del host directamente.
+    # Plex abrirá sus propios puertos (32400, 32469, etc.)
+    # No necesita sección "ports" cuando usa host.
+
+    security_opt:
+      - no-new-privileges:true  # Evita que el contenedor escale privilegios
+
+    environment:
+      - PUID=1000  # Usuario que ejecuta Plex (debe tener permisos en discos)
+      - PGID=1000  # Grupo asociado
+      - TZ=America/El_Salvador  # Zona horaria
+      - VERSION=docker  # Indica que corre en Docker
+      - PLEX_CLAIM=claim-ZGFSSR3e4xmyoKKmWuac # Token temporal para reclamar el servidor en tu cuenta Plex
+      - ADVERTISE_IP=http://IP:32400/ # IP que Plex anuncia a la red local para acceso
+
+    volumes:
+      - /etc/localtime:/etc/localtime:ro  # Sincroniza hora del host
+      - /datos/plex/config:/config  # Configuración y base de datos de Plex
+      - /datos/descargas:/data/descargas:ro  # Carpeta accesible para multimedia (solo lectura)
+
+      #- /mnt/disco1/Cine/Peliculas:/movies
+      # Biblioteca de películas (comentada)
+
+      #- /mnt/disco1/Cine/Series:/tv
+      # Biblioteca de series (comentada)

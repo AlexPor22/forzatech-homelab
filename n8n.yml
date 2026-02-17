@@ -1,0 +1,38 @@
+services:
+  n8n:  # Nombre del servicio (automatización tipo Zapier self-hosted)
+    image: n8nio/n8n:latest  # Imagen oficial de n8n
+    container_name: n8n  # Nombre personalizado del contenedor
+    restart: unless-stopped  # Se reinicia automáticamente si falla o reinicia el servidor
+    
+    security_opt:
+      - no-new-privileges:true  # Evita que el contenedor escale privilegios
+      
+    environment:
+      - TZ=America/El_Salvador  # Zona horaria para ejecuciones y logs
+      
+      - N8N_SECURE_COOKIE=false # Permite cookies no seguras (solo recomendable en HTTP interno)
+
+      - N8N_ALLOW_EXECUTE_COMMAND=true # Permite ejecutar comandos del sistema desde workflows (MUY sensible)
+
+      - NODES_EXCLUDE=[] # No excluye ningún nodo (todos los nodos disponibles)
+
+      - N8N_BASIC_AUTH_ACTIVE=true # Activa autenticación básica para acceder al panel
+
+      - N8N_BASIC_AUTH_USER= # Usuario de acceso al panel
+
+      - N8N_BASIC_AUTH_PASSWORD= # Contraseña del panel
+
+      - N8N_HOST=192.168.1.205 # IP del servidor donde corre n8n
+
+      - N8N_PORT=5678 # Puerto interno donde corre n8n
+
+      - N8N_PROTOCOL=http # Protocolo usado (HTTP en este caso)
+
+    volumes:
+      - /etc/localtime:/etc/localtime:ro  # Sincroniza hora del host
+      - /datos/n8n:/home/node/.n8n  # Base de datos, credenciales y workflows
+      - /usr/local/bin:/host-bin:ro  # Acceso de solo lectura a binarios del host
+      - /mnt/disco1:/mnt/disco1  # Acceso directo al disco externo
+
+    ports:
+      - "5678:5678"  # Acceso web → http://IP_DEL_SERVIDOR:5678

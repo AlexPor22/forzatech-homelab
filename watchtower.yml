@@ -1,0 +1,19 @@
+services:
+  watchtower:  # Servicio que actualiza automáticamente tus contenedores Docker
+    image: containrrr/watchtower:latest  # Imagen oficial de Watchtower
+    container_name: watchtower  # Nombre personalizado del contenedor
+    restart: unless-stopped  # Reinicio automático si falla o reinicia el servidor
+
+    security_opt:
+      - no-new-privileges:true  # Evita que el contenedor escale privilegios adicionales
+
+    environment:
+      - TZ=America/El_Salvador  # Zona horaria para logs correctos
+
+    volumes:
+      - /etc/localtime:/etc/localtime:ro  # Sincroniza hora del host
+      - /var/run/docker.sock:/var/run/docker.sock:ro # Acceso al socket de Docker (necesario para ver y actualizar contenedores)
+
+    command: --cleanup --interval 86400
+    # --cleanup  → elimina imágenes antiguas después de actualizar
+    # --interval 86400 → revisa actualizaciones cada 86400 segundos (24 horas)

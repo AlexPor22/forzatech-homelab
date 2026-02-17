@@ -1,0 +1,19 @@
+services:
+  homarr:  # Nombre del servicio (dashboard moderno para tu servidor)
+    container_name: homarr  # Nombre personalizado del contenedor
+    image: ghcr.io/homarr-labs/homarr:latest  # Imagen oficial desde GitHub Container Registry
+    restart: unless-stopped  # Se reinicia automáticamente si falla o reinicias el servidor
+
+    environment:
+      - TZ=America/El_Salvador  # Zona horaria para logs y tareas
+      - SECRET_ENCRYPTION_KEY=7978a4edfa3185c0fbf75612e72a93da8b61bb007bf0707570d9ec79322a9152  
+        # Clave usada por Homarr para cifrar datos sensibles (NO compartir públicamente)
+
+    volumes:
+      - /etc/localtime:/etc/localtime:ro  # Sincroniza hora del host
+      - /datos/homarr:/appdata  # Configuración, widgets, base de datos y personalización
+      - /var/run/docker.sock:/var/run/docker.sock  
+        # Permite que Homarr detecte contenedores Docker automáticamente
+
+    ports:
+      - "7575:7575"  # Acceso web → http://IP_DEL_SERVIDOR:7575

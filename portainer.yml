@@ -1,0 +1,20 @@
+services:
+  portainer:  # Servicio de administración gráfica para Docker
+    image: portainer/portainer-ce:latest  # Imagen oficial Community Edition
+    container_name: portainer  # Nombre personalizado del contenedor
+    restart: unless-stopped  # Reinicio automático si falla o reinicia el servidor
+
+    security_opt:
+      - no-new-privileges:true  # Evita que el contenedor escale privilegios adicionales
+
+    environment:
+      - TZ=America/El_Salvador  # Zona horaria para logs correctos
+
+    volumes:
+      - /etc/localtime:/etc/localtime:ro  # Sincroniza hora del host
+      - /var/run/docker.sock:/var/run/docker.sock:ro # Acceso al socket Docker (permite administrar contenedores)
+      - /datos/portainer/portainer-data:/data # Base de datos y configuración persistente de Portainer
+
+    ports:
+      - "9000:9000"  # Acceso web HTTP → http://IP_DEL_SERVIDOR:9000
+      # - "9443:9443" # opcional HTTPS (interfaz segura integrada)

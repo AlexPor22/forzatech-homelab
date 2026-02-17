@@ -1,0 +1,20 @@
+services:
+  dozzle:  # Nombre del servicio
+    image: amir20/dozzle:latest  # Imagen oficial de Dozzle (visor web de logs Docker)
+    container_name: dozzle  # Nombre personalizado del contenedor
+    restart: unless-stopped  # Se reinicia automáticamente si falla o al reiniciar el servidor
+
+    security_opt:
+      - no-new-privileges:true  # Impide que el contenedor obtenga privilegios adicionales
+
+    environment:
+      - TZ=America/El_Salvador  # Zona horaria para que los logs coincidan con tu país
+      - DOZZLE_LEVEL=info  # Nivel mínimo de logs mostrados (trace, debug, info, warn, error)
+      - DOZZLE_TAILSIZE=300  # Cantidad de líneas iniciales que muestra por contenedor
+
+    volumes:
+      - /etc/localtime:/etc/localtime:ro  # Sincroniza la hora del host
+      - /var/run/docker.sock:/var/run/docker.sock:ro  # Acceso de solo lectura al socket de Docker (para leer logs)
+
+    ports:
+      - "9999:8080"  # Acceso web → http://IP_DEL_SERVIDOR:9999

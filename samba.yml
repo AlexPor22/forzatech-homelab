@@ -1,0 +1,26 @@
+services:
+  samba:  # Servicio para compartir archivos en red (SMB)
+    image: dockurr/samba  # Imagen ligera para montar servidor Samba
+    container_name: samba  # Nombre personalizado del contenedor
+    restart: unless-stopped  # Reinicio automático si falla o reinicia el servidor
+
+    security_opt:
+      - no-new-privileges:true  # Evita que el contenedor escale privilegios
+
+    environment:
+      - NAME=Discos  # Nombre del recurso compartido que verás en la red
+      - USER=  # Usuario para autenticación SMB
+      - PASS=  # Contraseña del usuario
+      - UID=1000  # Usuario del sistema que será dueño de los archivos
+      - GID=1000  # Grupo asociado
+      - TZ=America/El_Salvador  # Zona horaria
+
+    volumes:
+      - /etc/localtime:/etc/localtime:ro  # Sincroniza hora del host
+      - /datos:/storage  # Carpeta que se compartirá en red (todo /datos)
+
+    ports:
+      - "445:445/tcp"  # Puerto principal SMB (Windows moderno)
+      - "139:139/tcp"  # Puerto NetBIOS Session Service
+      - "137:137/udp"  # NetBIOS Name Service
+      - "138:138/udp"  # NetBIOS Datagram Service
