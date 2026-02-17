@@ -1,6 +1,6 @@
 services:
   filebrowser:  # Nombre del servicio
-    image: hurlenko/filebrowser:v2.23.0  # Imagen específica (versión fija recomendada en producción)
+    image: hurlenko/filebrowser:v2.23.0  # Imagen específica
     container_name: filebrowser  # Nombre personalizado del contenedor
     restart: unless-stopped  # Se reinicia automáticamente si falla o reinicia el servidor
 

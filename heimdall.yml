@@ -1,5 +1,5 @@
 services:
-  heimdall:  # Nombre del servicio (dashboard principal de tu NAS)
+  heimdall:  # Nombre del servicio
     image: lscr.io/linuxserver/heimdall:latest  # Imagen oficial de LinuxServer.io
     container_name: heimdall  # Nombre personalizado del contenedor
     restart: unless-stopped  # Se reinicia automáticamente si falla o reinicia el servidor
@@ -8,7 +8,7 @@ services:
       - no-new-privileges:true  # Evita que el contenedor escale privilegios
 
     environment:
-      - PUID=1000  # Usuario que ejecuta el contenedor (debe coincidir con permisos en /datos)
+      - PUID=1000  # Usuario que ejecuta el contenedor
       - PGID=1000  # Grupo asociado
       - TZ=America/El_Salvador  # Zona horaria para logs y configuraciones
 

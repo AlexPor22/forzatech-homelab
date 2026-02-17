@@ -5,10 +5,10 @@ services:
     restart: unless-stopped  # Se reinicia automáticamente si falla o al reiniciar el servidor
 
     security_opt:
-      - no-new-privileges:true  # Evita que el contenedor escale privilegios (buena práctica de seguridad)
+      - no-new-privileges:true  # Evita que el contenedor escale privilegios
 
     environment:
-      - TZ=America/El_Salvador  # Zona horaria del contenedor (logs correctos)
-      - TUNNEL_TOKEN=  # Token generado en Cloudflare Zero Trust (aquí debes pegarlo)
+      - TZ=America/El_Salvador  # Zona horaria del contenedor
+      - TUNNEL_TOKEN=  # Token generado en Cloudflare Zero Trust
 
     command: tunnel --no-autoupdate run  # Ejecuta el túnel y desactiva auto-actualización interna

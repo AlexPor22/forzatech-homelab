@@ -11,7 +11,7 @@ services:
       - TZ=America/El_Salvador  # Zona horaria del contenedor
 
     volumes:
-      - /etc/localtime:/etc/localtime:ro  # Sincroniza hora del host (solo lectura)
+      - /etc/localtime:/etc/localtime:ro  # Sincroniza hora del host
       - /datos/adguardhome/work:/opt/adguardhome/work  # Base de datos, estadísticas y cache
       - /datos/adguardhome/config:/opt/adguardhome/conf  # Archivos de configuración
 
