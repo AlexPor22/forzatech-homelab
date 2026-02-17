@@ -1,0 +1,37 @@
+services:
+  adguardhome:  # Nombre del servicio
+    image: adguard/adguardhome:latest  # Imagen oficial de AdGuard Home
+    container_name: adguardhome  # Nombre personalizado del contenedor
+    restart: unless-stopped  # Se reinicia automáticamente si falla
+
+    security_opt:
+      - no-new-privileges:true  # Evita que el contenedor escale privilegios
+
+    environment:
+      - TZ=America/El_Salvador  # Zona horaria del contenedor
+
+    volumes:
+      - /etc/localtime:/etc/localtime:ro  # Sincroniza hora del host (solo lectura)
+      - /datos/adguardhome/work:/opt/adguardhome/work  # Base de datos, estadísticas y cache
+      - /datos/adguardhome/config:/opt/adguardhome/conf  # Archivos de configuración
+
+    ports:
+      # DNS normal
+      - "53:53/tcp"   # DNS TCP
+      - "53:53/udp"   # DNS UDP (el más usado)
+
+      # Panel Web 
+      - "3000:3000/tcp"  # Asistente inicial de configuración
+      - "8082:80/tcp"    # Panel principal (http://IP:8082)
+
+      # DNS cifrado 
+      - "443:443/tcp"  # DNS-over-HTTPS (DoH)
+      - "443:443/udp"  # QUIC sobre 443 (si está habilitado)
+      - "853:853/tcp"  # DNS-over-TLS (DoT)
+      - "853:853/udp"  # DoT UDP (si se usa)
+
+      # DNS-over-QUIC 
+      - "784:784/udp"    # Puerto estándar DoQ
+      - "8853:8853/udp"  # Puerto alternativo DoQ
+      - "5443:5443/tcp"  # Alternativo seguro
+      - "5443:5443/udp"  # Alternativo QUIC

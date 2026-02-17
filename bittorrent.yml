@@ -1,0 +1,22 @@
+services:
+  qbittorrent:  # Nombre del servicio
+    image: lscr.io/linuxserver/qbittorrent:latest  # Imagen oficial de LinuxServer.io
+    container_name: qbittorrent  # Nombre personalizado del contenedor
+    restart: unless-stopped  # Se reinicia automáticamente si falla
+
+    environment:
+      - PUID=33  # ID del usuario que ejecuta el contenedor (33 = www-data en Linux)
+      - PGID=33  # ID del grupo (debe coincidir con permisos de /datos)
+      - TZ=America/El_Salvador  # Zona horaria para logs y tareas
+      - WEBUI_PORT=8080  # Puerto interno del panel web
+      - TORRENTING_PORT=6881  # Puerto interno para conexiones P2P
+    
+    volumes:
+      - /etc/localtime:/etc/localtime:ro  # Sincroniza hora del host (solo lectura)
+      - /datos/qbittorrent/appdata:/config  # Configuración, base de datos y ajustes
+      - /datos/descargas:/downloads  # Carpeta donde se guardan las descargas
+    
+    ports:
+      - "8080:8080"  # Acceso al panel web → http://IP_DEL_SERVIDOR:8080
+      - "6881:6881"  # Puerto TCP para tráfico BitTorrent
+      - "6881:6881/udp"  # Puerto UDP para DHT y conexiones P2P

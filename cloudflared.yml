@@ -1,0 +1,14 @@
+services:
+  cloudflared:  # Nombre del servicio
+    image: cloudflare/cloudflared:latest  # Imagen oficial de Cloudflare Tunnel
+    container_name: cloudflared  # Nombre personalizado del contenedor
+    restart: unless-stopped  # Se reinicia automáticamente si falla o al reiniciar el servidor
+
+    security_opt:
+      - no-new-privileges:true  # Evita que el contenedor escale privilegios (buena práctica de seguridad)
+
+    environment:
+      - TZ=America/El_Salvador  # Zona horaria del contenedor (logs correctos)
+      - TUNNEL_TOKEN=  # Token generado en Cloudflare Zero Trust (aquí debes pegarlo)
+
+    command: tunnel --no-autoupdate run  # Ejecuta el túnel y desactiva auto-actualización interna
